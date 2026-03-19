@@ -23,7 +23,6 @@ export const metadata = {
   title: "Acoustic Treatment Panels & Solutions | Precision HiFi Acoustics",
   description:
     "Elevate your listening experience with Acoustic Treatment Panels & Solutions. We offer advanced acoustic panels, diffusers, and soundproofing solutions for home theaters, studios, and audiophile rooms. Custom sizes available. Contact us for expert acoustic design.",
-  generator: "v0.app",
 }
 
 export default function RootLayout({
