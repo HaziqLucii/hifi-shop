@@ -23,6 +23,30 @@ export const metadata = {
   title: "Acoustic Treatment Panels & Solutions | Precision HiFi Acoustics",
   description:
     "Elevate your listening experience with Acoustic Treatment Panels & Solutions. We offer advanced acoustic panels, diffusers, and soundproofing solutions for home theaters, studios, and audiophile rooms. Custom sizes available. Contact us for expert acoustic design.",
+  metadataBase: new URL("https://acoustic-treats.vercel.app"),
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Acoustic Treatment Panels & Solutions | Precision HiFi Acoustics",
+    description:
+      "Advanced acoustic panels, diffusers, and soundproofing solutions for home theaters, studios, and audiophile rooms. Custom sizes available.",
+    url: "https://acoustic-treats.vercel.app",
+    siteName: "Acoustic Treats",
+    locale: "en_MY",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+  verification: {
+    google: "3Fz8AnLc6C3s0eJiIGbEqVWBVZ4bSGN4NC4k_J2x3_k",
+  },
 }
 
 export default function RootLayout({
