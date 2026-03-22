@@ -49,6 +49,26 @@ export const metadata = {
   },
 }
 
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Acoustic Treats",
+  url: "https://acoustic-treats.vercel.app",
+}
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Acoustic Treats",
+  url: "https://acoustic-treats.vercel.app",
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: "+60197697886",
+    contactType: "sales",
+    availableLanguage: ["English", "Malay"],
+  },
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -56,6 +76,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+      </head>
       <body className={`${cormorant.variable} ${outfit.variable} font-body bg-acoustic-black text-acoustic-cream`}>
         <ParallaxProviderWrapper>
           <Navbar />
