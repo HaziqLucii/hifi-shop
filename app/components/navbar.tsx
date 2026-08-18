@@ -26,7 +26,7 @@ export default function Navbar() {
               <span className="font-body text-[10px] tracking-widest text-acoustic-gold">AT</span>
             </div>
             <span className="font-display text-xl md:text-2xl text-acoustic-cream tracking-wide leading-none">
-              Acoustic Treatment
+              Acoustic Treats
             </span>
           </Link>
 

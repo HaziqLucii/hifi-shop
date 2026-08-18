@@ -20,17 +20,17 @@ const outfit = Outfit({
 })
 
 export const metadata = {
-  title: "Acoustic Treatment Panels & Solutions | Precision HiFi Acoustics",
+  title: "Acoustic Treats | Acoustic Panels & Soundproofing Malaysia",
   description:
-    "Elevate your listening experience with Acoustic Treatment Panels & Solutions. We offer advanced acoustic panels, diffusers, and soundproofing solutions for home theaters, studios, and audiophile rooms. Custom sizes available. Contact us for expert acoustic design.",
+    "Acoustic Treats supplies premium acoustic treatment panels, diffusers, and soundproofing solutions for home theaters, studios, and audiophile rooms in Malaysia. Custom sizes available. Contact us on WhatsApp for a quote.",
   metadataBase: new URL("https://acoustic-treats.vercel.app"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Acoustic Treatment Panels & Solutions | Precision HiFi Acoustics",
+    title: "Acoustic Treats | Acoustic Panels & Soundproofing Malaysia",
     description:
-      "Advanced acoustic panels, diffusers, and soundproofing solutions for home theaters, studios, and audiophile rooms. Custom sizes available.",
+      "Premium acoustic panels, diffusers, and soundproofing solutions for home theaters, studios, and audiophile rooms in Malaysia. Custom sizes available.",
     url: "https://acoustic-treats.vercel.app",
     siteName: "Acoustic Treats",
     locale: "en_MY",
@@ -60,7 +60,15 @@ const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "Acoustic Treats",
+  alternateName: "Acoustic Treatment Panels & Solutions",
   url: "https://acoustic-treats.vercel.app",
+  logo: "https://acoustic-treats.vercel.app/apple-icon.png",
+  description:
+    "Acoustic Treats supplies premium acoustic treatment panels, diffusers, and soundproofing solutions for home theaters, studios, and audiophile rooms in Malaysia.",
+  areaServed: "MY",
+  sameAs: [
+    "https://www.facebook.com/marketplace/profile/100027440362157/",
+  ],
   contactPoint: {
     "@type": "ContactPoint",
     telephone: "+60197697886",

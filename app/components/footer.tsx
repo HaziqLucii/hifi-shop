@@ -12,7 +12,7 @@ export default function Footer() {
               <div className="w-8 h-8 border border-acoustic-gold/50 flex items-center justify-center">
                 <span className="font-body text-[10px] tracking-widest text-acoustic-gold">AT</span>
               </div>
-              <span className="font-display text-xl text-acoustic-cream">Acoustic Treatment</span>
+              <span className="font-display text-xl text-acoustic-cream">Acoustic Treats</span>
             </div>
             <p className="font-body text-sm text-acoustic-muted leading-relaxed max-w-xs">
               Premium acoustic treatment panels for home theaters, recording studios, and audiophile listening rooms.
@@ -54,10 +54,10 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <a
-                  href="tel:+60177697886"
+                  href="tel:+60197697886"
                   className="font-body text-sm text-acoustic-muted hover:text-acoustic-cream transition-colors duration-200"
                 >
-                  +6017-769 7886
+                  +6019-769 7886
                 </a>
               </li>
               <li>
@@ -98,7 +98,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="pt-8 border-t border-acoustic-border flex flex-col sm:flex-row justify-between items-center gap-3">
           <p className="font-body text-xs text-acoustic-dim">
-            © 2025 Acoustic Treatment Panels &amp; Solutions. All rights reserved.
+            © 2025 Acoustic Treats. All rights reserved.
           </p>
           <p className="font-body text-xs text-acoustic-dim">
             Available daily · 9:00 AM – 5:00 PM GMT +8

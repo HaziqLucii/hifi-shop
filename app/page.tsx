@@ -335,8 +335,8 @@ function ContactSection() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-10 border-t border-acoustic-border">
           <div>
             <p className="font-body text-[9px] tracking-[0.25em] uppercase text-acoustic-gold mb-2">Phone</p>
-            <a href="tel:+60177697886" className="font-body text-sm text-acoustic-muted hover:text-acoustic-cream transition-colors">
-              +6017-769 7886
+            <a href="tel:+60197697886" className="font-body text-sm text-acoustic-muted hover:text-acoustic-cream transition-colors">
+              +6019-769 7886
             </a>
           </div>
           <div>
@@ -403,7 +403,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.45 }}
           >
-            Acoustic Treatment Panels &amp; Solutions
+            Acoustic Treats
           </motion.p>
 
           <motion.h1
@@ -422,8 +422,8 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            Elevate your listening experience with expert acoustic solutions crafted for
-            home theaters, studios, and audiophile rooms.
+            Acoustic Treats crafts premium acoustic panels, diffusers, and soundproofing
+            for home theaters, studios, and audiophile rooms.
           </motion.p>
 
           <motion.div
