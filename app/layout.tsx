@@ -1,5 +1,5 @@
 import "./globals.css"
-import { Cormorant_Garamond, Outfit } from "next/font/google"
+import { Fraunces, JetBrains_Mono, Space_Grotesk } from "next/font/google"
 import Navbar from "./components/navbar"
 import Footer from "./components/footer"
 import TransitionLayout from "./components/transition-layout"
@@ -7,16 +7,25 @@ import ParallaxProviderWrapper from "./components/parallax-provider-wrapper"
 import { Analytics } from "@vercel/analytics/next"
 import type React from "react"
 
-const cormorant = Cormorant_Garamond({
+const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
   variable: "--font-display",
   display: "swap",
 })
 
-const outfit = Outfit({
+const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
+  weight: ["400", "500", "700"],
   variable: "--font-body",
+  display: "swap",
+})
+
+const grotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-grotesk",
   display: "swap",
 })
 
@@ -95,7 +104,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
       </head>
-      <body className={`${cormorant.variable} ${outfit.variable} font-body bg-acoustic-black text-acoustic-cream`}>
+      <body
+        className={`${fraunces.variable} ${jetbrains.variable} ${grotesk.variable} font-body bg-acoustic-black text-acoustic-cream antialiased`}
+      >
+        <div className="film-grain" aria-hidden="true" />
         <ParallaxProviderWrapper>
           <Navbar />
           <TransitionLayout>{children}</TransitionLayout>

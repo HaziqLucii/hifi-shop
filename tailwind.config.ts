@@ -12,21 +12,24 @@ const config: Config = {
     extend: {
       fontFamily: {
         display: ['var(--font-display)', 'Georgia', 'serif'],
-        body: ['var(--font-body)', 'system-ui', 'sans-serif'],
+        body: ['var(--font-body)', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        grotesk: ['var(--font-grotesk)', 'system-ui', 'sans-serif'],
       },
       colors: {
         acoustic: {
-          black:       '#080b0f',
-          dark:        '#0f1318',
-          card:        '#141a22',
-          'card-hover':'#1a2230',
-          gold:        '#b8953a',
-          'gold-light':'#d4af5a',
-          'gold-dim':  '#7a6428',
-          cream:       '#f0ebe2',
-          muted:       '#8a8580',
-          dim:         '#4e4c48',
-          border:      '#1e2530',
+          // "Anechoic" — warm monochrome. Names kept for compatibility;
+          // `gold` is repurposed to bone ink (no accent hue in this system).
+          black:       '#0b0a09',
+          dark:        '#100e0c',
+          card:        '#15120f',
+          'card-hover':'#1c1815',
+          gold:        '#cdc4ba',
+          'gold-light':'#e9e2d7',
+          'gold-dim':  '#726b61',
+          cream:       '#e9e2d7',
+          muted:       '#9b948b',
+          dim:         '#5f5a51',
+          border:      '#2a251f',
         },
         // Shadcn CSS variable tokens (kept for Shadcn components)
         background: 'hsl(var(--background))',
