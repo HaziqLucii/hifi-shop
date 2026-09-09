@@ -4,6 +4,7 @@ import Navbar from "./components/navbar"
 import Footer from "./components/footer"
 import TransitionLayout from "./components/transition-layout"
 import ParallaxProviderWrapper from "./components/parallax-provider-wrapper"
+import { Analytics } from "@vercel/analytics/next"
 import type React from "react"
 
 const cormorant = Cormorant_Garamond({
@@ -100,6 +101,7 @@ export default function RootLayout({
           <TransitionLayout>{children}</TransitionLayout>
           <Footer />
         </ParallaxProviderWrapper>
+        <Analytics />
       </body>
     </html>
   )
