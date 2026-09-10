@@ -1,26 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { X, ChevronLeft, ChevronRight } from "lucide-react"
 import { Breadcrumb } from "./breadcrumb"
-
-type Spec = { name: string; value: string }
-type ProductImage = { src: string; alt: string }
-
-interface ProductDetailProps {
-  index: string
-  eyebrow: string
-  title: string
-  subtitle: string
-  breadcrumbLabel: string
-  breadcrumbHref: string
-  images: ProductImage[]
-  features: string[]
-  specs: Spec[]
-  about: string[]
-  whatsappMessage: string
-}
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import type { Product } from "@/lib/products"
+import { ordering, faqs, whatsappHref } from "@/lib/business"
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -30,21 +17,68 @@ function WhatsAppIcon({ className }: { className?: string }) {
   )
 }
 
-export default function ProductDetail({
-  index,
-  eyebrow,
-  title,
-  subtitle,
-  breadcrumbLabel,
-  breadcrumbHref,
-  images,
-  features,
-  specs,
-  about,
-  whatsappMessage,
-}: ProductDetailProps) {
+export default function ProductDetail({ product }: { product: Product }) {
+  const {
+    index,
+    eyebrow,
+    name: title,
+    subtitle,
+    slug,
+    images,
+    features,
+    specs,
+    about,
+    whatsappMessage,
+  } = product
+
   const [selected, setSelected] = useState(0)
-  const waHref = `https://wa.me/60197697886?text=${encodeURIComponent(whatsappMessage)}`
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const waHref = whatsappHref(whatsappMessage)
+
+  const galleryTriggerRef = useRef<HTMLButtonElement>(null)
+  const dialogRef = useRef<HTMLDivElement>(null)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+
+  const closeLightbox = () => {
+    setLightboxOpen(false)
+    galleryTriggerRef.current?.focus()
+  }
+
+  // Focus management, keyboard navigation, and a Tab trap for the fullscreen
+  // lightbox: without this, background links stay reachable by keyboard
+  // behind an open modal.
+  useEffect(() => {
+    if (!lightboxOpen) return
+    closeButtonRef.current?.focus()
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeLightbox()
+        return
+      }
+      if (e.key === "ArrowRight") setSelected((i) => (i + 1) % images.length)
+      if (e.key === "ArrowLeft") setSelected((i) => (i - 1 + images.length) % images.length)
+      if (e.key === "Tab" && dialogRef.current) {
+        const focusable = dialogRef.current.querySelectorAll<HTMLElement>("button")
+        const first = focusable[0]
+        const last = focusable[focusable.length - 1]
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault()
+          last.focus()
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault()
+          first.focus()
+        }
+      }
+    }
+    window.addEventListener("keydown", onKey)
+    document.body.style.overflow = "hidden"
+    return () => {
+      window.removeEventListener("keydown", onKey)
+      document.body.style.overflow = ""
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lightboxOpen, images.length])
 
   return (
     <div className="min-h-screen bg-acoustic-black">
@@ -57,7 +91,7 @@ export default function ProductDetail({
           <Breadcrumb
             items={[
               { label: "Products", href: "/products" },
-              { label: breadcrumbLabel, href: breadcrumbHref },
+              { label: title, href: `/products/${slug}` },
             ]}
           />
           <div className="mt-6 flex items-center gap-4 font-body text-[10px] tracking-[0.28em] uppercase text-acoustic-muted">
@@ -76,18 +110,28 @@ export default function ProductDetail({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
           {/* Gallery */}
           <div className="lg:sticky lg:top-24 lg:self-start">
-            <div className="relative aspect-square overflow-hidden mb-2.5 border border-acoustic-border">
+            <button
+              ref={galleryTriggerRef}
+              type="button"
+              onClick={() => setLightboxOpen(true)}
+              aria-label="View fullscreen"
+              className="relative aspect-square w-full overflow-hidden mb-2.5 border border-acoustic-border block"
+            >
               <Image
                 src={images[selected].src}
                 alt={images[selected].alt}
                 fill
                 className="object-cover"
+                sizes="(min-width: 1024px) 48vw, 100vw"
                 priority
               />
               <div className="absolute left-3 bottom-3 font-body text-[9px] tracking-[0.25em] uppercase text-acoustic-cream/70 bg-acoustic-black/50 px-2 py-1 tabular-nums">
                 {String(selected + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
               </div>
-            </div>
+              <div className="absolute right-3 bottom-3 font-body text-[9px] tracking-[0.25em] uppercase text-acoustic-cream/70 bg-acoustic-black/50 px-2 py-1">
+                Tap to enlarge
+              </div>
+            </button>
             <div className="grid grid-cols-5 sm:grid-cols-6 gap-1.5">
               {images.map((image, i) => (
                 <button
@@ -134,6 +178,25 @@ export default function ProductDetail({
               </dl>
             </div>
 
+            {/* Ordering */}
+            <div>
+              <p className="font-body text-[10px] tracking-[0.3em] uppercase text-acoustic-gold mb-6">Ordering</p>
+              <dl className="border-t border-acoustic-border">
+                {[
+                  ["Lead Time", ordering.leadTime],
+                  ["Delivery", ordering.delivery],
+                  ["Payment", ordering.payment],
+                  ["Installation", ordering.installation],
+                  ["Warranty", ordering.warranty],
+                ].map(([label, value]) => (
+                  <div key={label} className="py-3.5 border-b border-acoustic-border">
+                    <dt className="font-body text-[9px] tracking-[0.25em] uppercase text-acoustic-dim mb-1.5">{label}</dt>
+                    <dd className="font-body text-[12px] text-acoustic-muted leading-relaxed">{value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+
             {/* Custom notice */}
             <div className="border border-acoustic-border p-6 bg-acoustic-card">
               <p className="font-body text-[10px] tracking-[0.25em] uppercase text-acoustic-gold mb-2">Custom Sizes Available</p>
@@ -143,7 +206,7 @@ export default function ProductDetail({
             </div>
 
             {/* CTAs */}
-            <div className="space-y-3">
+            <div className="space-y-3 hidden md:block">
               <a
                 href={waHref}
                 target="_blank"
@@ -154,7 +217,7 @@ export default function ProductDetail({
                 Enquire via WhatsApp
               </a>
               <Link
-                href="/request-quote"
+                href={`/request-quote?product=${slug}`}
                 className="w-full flex items-center justify-center font-body text-[11px] tracking-[0.2em] uppercase border border-acoustic-border text-acoustic-cream py-4 px-8 hover:border-acoustic-gold hover:text-acoustic-gold transition-all duration-200"
               >
                 Request a Formal Quote
@@ -176,6 +239,91 @@ export default function ProductDetail({
           </div>
         </div>
       </section>
+
+      {/* FAQ */}
+      <section className="border-t border-acoustic-border py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto">
+          <p className="font-body text-[10px] tracking-[0.3em] uppercase text-acoustic-gold mb-4">Frequently Asked</p>
+          <h2 className="font-display text-3xl md:text-5xl text-acoustic-cream font-light mb-10">Questions buyers ask</h2>
+          <Accordion type="single" collapsible className="border-t border-acoustic-border">
+            {faqs.map((faq, i) => (
+              <AccordionItem key={i} value={`item-${i}`} className="border-acoustic-border">
+                <AccordionTrigger className="font-body text-[13px] text-acoustic-cream hover:no-underline py-5 text-left">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="font-body text-[13px] text-acoustic-muted leading-relaxed">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </section>
+
+      {/* Sticky mobile WhatsApp bar */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-acoustic-black border-t border-acoustic-border p-3">
+        <a
+          href={waHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full flex items-center justify-center gap-3 font-body text-[11px] tracking-[0.2em] uppercase bg-acoustic-gold text-acoustic-black py-3.5 px-8 font-medium"
+        >
+          <WhatsAppIcon className="w-4 h-4 shrink-0" />
+          Enquire via WhatsApp
+        </a>
+      </div>
+
+      {/* Fullscreen lightbox */}
+      {lightboxOpen && (
+        <div
+          ref={dialogRef}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) closeLightbox()
+          }}
+          className="fixed inset-0 z-50 bg-acoustic-black flex items-center justify-center"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${title} image ${selected + 1} of ${images.length}`}
+        >
+          <button
+            ref={closeButtonRef}
+            type="button"
+            onClick={closeLightbox}
+            aria-label="Close"
+            className="absolute top-5 right-5 text-acoustic-cream/70 hover:text-acoustic-gold transition-colors p-2"
+          >
+            <X className="w-6 h-6" />
+          </button>
+          <button
+            type="button"
+            onClick={() => setSelected((i) => (i - 1 + images.length) % images.length)}
+            aria-label="Previous image"
+            className="absolute left-2 sm:left-5 text-acoustic-cream/70 hover:text-acoustic-gold transition-colors p-2"
+          >
+            <ChevronLeft className="w-8 h-8" />
+          </button>
+          <div className="relative w-[88vw] h-[70vh] max-w-3xl">
+            <Image
+              src={images[selected].src}
+              alt={images[selected].alt}
+              fill
+              className="object-contain"
+              sizes="88vw"
+            />
+          </div>
+          <button
+            type="button"
+            onClick={() => setSelected((i) => (i + 1) % images.length)}
+            aria-label="Next image"
+            className="absolute right-2 sm:right-5 text-acoustic-cream/70 hover:text-acoustic-gold transition-colors p-2"
+          >
+            <ChevronRight className="w-8 h-8" />
+          </button>
+          <div className="absolute bottom-6 font-body text-[10px] tracking-[0.25em] uppercase text-acoustic-cream/60 tabular-nums">
+            {String(selected + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

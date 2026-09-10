@@ -1,8 +1,21 @@
+"use client"
+
 import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { business } from "@/lib/business"
 
 export default function Footer() {
+  const year = new Date().getFullYear()
+  const pathname = usePathname()
+  // Product pages render a sticky mobile WhatsApp bar (~70px) that pins to
+  // the viewport bottom. Padding mid-page can't protect against it (a fixed
+  // element always covers the last N px of whatever is scrolled into view),
+  // so the only real fix is extra space after the footer itself, and only
+  // on the pages that actually have the bar.
+  const hasStickyBar = pathname?.startsWith("/products/") && pathname !== "/products"
+
   return (
-    <footer className="relative bg-acoustic-dark border-t border-acoustic-border overflow-hidden">
+    <footer className={`relative bg-acoustic-dark border-t border-acoustic-border overflow-hidden ${hasStickyBar ? "pb-20 md:pb-0" : ""}`}>
       {/* Faint oversized watermark */}
       <span
         aria-hidden="true"
@@ -26,7 +39,7 @@ export default function Footer() {
               Premium acoustic treatment panels for home theaters, recording studios, and audiophile listening rooms.
             </p>
             <p className="font-body text-[10px] tracking-[0.2em] uppercase text-acoustic-dim">
-              Kuala Lumpur · Malaysia · GMT+8
+              {business.city} · {business.region} · GMT+8
             </p>
           </div>
 
@@ -62,33 +75,33 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <a
-                  href="tel:+60197697886"
+                  href={`tel:${business.phone}`}
                   className="font-body text-[13px] text-acoustic-muted hover:text-acoustic-cream transition-colors duration-200"
                 >
-                  +6019-769 7886
+                  {business.phoneDisplay}
                 </a>
               </li>
               <li>
                 <a
-                  href="mailto:amaryaakob95@gmail.com"
+                  href={`mailto:${business.email}`}
                   className="font-body text-[13px] text-acoustic-muted hover:text-acoustic-cream transition-colors duration-200 break-all"
                 >
-                  amaryaakob95@gmail.com
+                  {business.email}
                 </a>
               </li>
               <li>
                 <a
-                  href="https://www.facebook.com/marketplace/profile/100027440362157/?ref=permalink&mibextid=dXMIcH"
+                  href={business.facebookPage}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-body text-[13px] text-acoustic-muted hover:text-acoustic-cream transition-colors duration-200"
                 >
-                  Facebook Marketplace
+                  Facebook
                 </a>
               </li>
               <li>
                 <a
-                  href="https://wa.me/60197697886"
+                  href={business.whatsappBase}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-body text-[13px] text-acoustic-muted hover:text-acoustic-cream transition-colors duration-200 flex items-center gap-2"
@@ -106,10 +119,10 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="pt-8 border-t border-acoustic-border flex flex-col sm:flex-row justify-between items-center gap-3">
           <p className="font-body text-[10px] tracking-[0.18em] uppercase text-acoustic-dim">
-            © 2025 Acoustic Treats — All rights reserved
+            © {year} Acoustic Treats. All rights reserved
           </p>
           <p className="font-body text-[10px] tracking-[0.18em] uppercase text-acoustic-dim">
-            Available daily · 9:00–17:00 GMT+8
+            Available {business.hours}
           </p>
         </div>
       </div>

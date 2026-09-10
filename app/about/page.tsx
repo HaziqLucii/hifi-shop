@@ -1,5 +1,15 @@
+import type { Metadata } from "next"
 import { Breadcrumb } from "../components/breadcrumb"
 import Link from "next/link"
+import { breadcrumbJsonLd } from "@/lib/schema"
+
+export const metadata: Metadata = {
+  title: "About Us",
+  description: "Acoustic Treats builds custom acoustic panels, diffusers, and soundproofing solutions in Malaysia.",
+  alternates: {
+    canonical: "/about",
+  },
+}
 
 function SoundWaveHorizontal() {
   const bars = [6, 12, 20, 28, 22, 36, 26, 40, 28, 34, 20, 28, 14, 22, 10, 16, 22, 30, 38, 28, 18, 26, 34, 22, 14, 10, 18, 24]
@@ -44,6 +54,17 @@ const values = [
 export default function About() {
   return (
     <div className="min-h-screen bg-acoustic-black">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd([
+              { name: "Home", path: "/" },
+              { name: "About", path: "/about" },
+            ])
+          ),
+        }}
+      />
       {/* Header */}
       <section className="relative border-b border-acoustic-border bg-acoustic-dark overflow-hidden">
         <span aria-hidden="true" className="pointer-events-none select-none absolute -right-6 -bottom-20 font-display italic text-[16rem] md:text-[22rem] leading-none text-acoustic-gold/[0.04]">

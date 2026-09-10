@@ -2,10 +2,11 @@ import "./globals.css"
 import { Fraunces, JetBrains_Mono, Space_Grotesk } from "next/font/google"
 import Navbar from "./components/navbar"
 import Footer from "./components/footer"
-import TransitionLayout from "./components/transition-layout"
-import ParallaxProviderWrapper from "./components/parallax-provider-wrapper"
 import { Analytics } from "@vercel/analytics/next"
+import type { Metadata, Viewport } from "next"
 import type React from "react"
+import { SITE_URL, business } from "@/lib/business"
+import { localBusinessJsonLd, websiteJsonLd } from "@/lib/schema"
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -29,20 +30,32 @@ const grotesk = Space_Grotesk({
   display: "swap",
 })
 
-export const metadata = {
-  title: "Acoustic Treats | Acoustic Panels & Soundproofing Malaysia",
+export const viewport: Viewport = {
+  themeColor: "#0b0a09",
+}
+
+export const metadata: Metadata = {
+  title: {
+    default: "Acoustic Treats | Acoustic Panels & Soundproofing Malaysia",
+    template: "%s | Acoustic Treats",
+  },
   description:
     "Acoustic Treats supplies premium acoustic treatment panels, diffusers, and soundproofing solutions for home theaters, studios, and audiophile rooms in Malaysia. Custom sizes available. Contact us on WhatsApp for a quote.",
-  metadataBase: new URL("https://acoustic-treats.vercel.app"),
+  metadataBase: new URL(SITE_URL),
   alternates: {
+    // Only the homepage inherits this: every other route (about, products,
+    // product detail, request-quote) sets its own `alternates.canonical`,
+    // which fully replaces this value rather than merging with it. Without
+    // this, the homepage would ship with no canonical tag at all, since it's
+    // a "use client" component and can't export its own metadata.
     canonical: "/",
   },
   openGraph: {
     title: "Acoustic Treats | Acoustic Panels & Soundproofing Malaysia",
     description:
       "Premium acoustic panels, diffusers, and soundproofing solutions for home theaters, studios, and audiophile rooms in Malaysia. Custom sizes available.",
-    url: "https://acoustic-treats.vercel.app",
-    siteName: "Acoustic Treats",
+    url: SITE_URL,
+    siteName: business.name,
     locale: "en_MY",
     type: "website",
   },
@@ -59,60 +72,30 @@ export const metadata = {
   },
 }
 
-const websiteJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: "Acoustic Treats",
-  url: "https://acoustic-treats.vercel.app",
-}
-
-const organizationJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "Acoustic Treats",
-  alternateName: "Acoustic Treatment Panels & Solutions",
-  url: "https://acoustic-treats.vercel.app",
-  logo: "https://acoustic-treats.vercel.app/apple-icon.png",
-  description:
-    "Acoustic Treats supplies premium acoustic treatment panels, diffusers, and soundproofing solutions for home theaters, studios, and audiophile rooms in Malaysia.",
-  areaServed: "MY",
-  sameAs: [
-    "https://www.facebook.com/marketplace/profile/100027440362157/",
-  ],
-  contactPoint: {
-    "@type": "ContactPoint",
-    telephone: "+60197697886",
-    contactType: "sales",
-    availableLanguage: ["English", "Malay"],
-  },
-}
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en-MY">
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd()) }}
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd()) }}
         />
       </head>
       <body
         className={`${fraunces.variable} ${jetbrains.variable} ${grotesk.variable} font-body bg-acoustic-black text-acoustic-cream antialiased`}
       >
         <div className="film-grain" aria-hidden="true" />
-        <ParallaxProviderWrapper>
-          <Navbar />
-          <TransitionLayout>{children}</TransitionLayout>
-          <Footer />
-        </ParallaxProviderWrapper>
+        <Navbar />
+        <main>{children}</main>
+        <Footer />
         <Analytics />
       </body>
     </html>

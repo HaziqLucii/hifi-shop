@@ -7,6 +7,8 @@ import { useCallback, useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { useGSAP } from "@gsap/react"
+import { products as PRODUCTS } from "@/lib/products"
+import { business, whatsappHref } from "@/lib/business"
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
 
@@ -21,51 +23,6 @@ function SoundWave({ className }: { className?: string }) {
   )
 }
 
-const PRODUCTS = [
-  {
-    idx: "01",
-    name: "Binary Abfuser",
-    tag: "Hybrid Absorber · Diffuser",
-    description:
-      "Advanced acoustic treatment combining absorption and diffusion. Built for studios and listening rooms that need precise sound control.",
-    image: "https://kx2kaqlxinzax2dn.public.blob.vercel-storage.com/binaryabfuser/binaryabfuser-1.jpg",
-    link: "/products/binary-abfuser",
-    specs: [
-      ["Type", "Hybrid absorber / diffuser"],
-      ["Best for", "Studios · listening rooms"],
-      ["Sizing", "Made to order"],
-    ],
-  },
-  {
-    idx: "02",
-    name: "Acoustic Diffuser",
-    tag: "Sound Wave Scattering",
-    description:
-      "Precision-engineered sound wave scattering for a natural, spacious sound field. Restores balance without deadening the room.",
-    image: "https://kx2kaqlxinzax2dn.public.blob.vercel-storage.com/diffuser/diffusers-1.jpeg",
-    link: "/products/diffuser",
-    specs: [
-      ["Type", "Diffusion panel"],
-      ["Best for", "Home theaters · rooms"],
-      ["Sizing", "Made to order"],
-    ],
-  },
-  {
-    idx: "03",
-    name: "Absorption Panel",
-    tag: "Echo & Reverb Control",
-    description:
-      "Professional-grade sound absorption. Reduces echo and reverberation for clearer, more accurate sound reproduction.",
-    image: "https://kx2kaqlxinzax2dn.public.blob.vercel-storage.com/absorptionpanel/absorption-panel-1.jpeg",
-    link: "/products/absorption-soundproof",
-    specs: [
-      ["Type", "Broadband absorber"],
-      ["Best for", "Echo · reverb control"],
-      ["Sizing", "Made to order"],
-    ],
-  },
-]
-
 const STATS = [
   ["03", "Product Lines"],
   ["4.6", "Marketplace Rating"],
@@ -77,6 +34,14 @@ const REASONS = [
   { number: "01", title: "Deep HiFi Expertise", description: "Backed by years of hands-on experience in high-fidelity audio and room acoustics." },
   { number: "02", title: "Premium Materials", description: "Carefully selected, fire-rated acoustic materials that perform as beautifully as they look." },
   { number: "03", title: "Custom Solutions", description: "Every room is unique. Each treatment is tailored to your specific space and acoustic goals." },
+]
+
+const INSTALLATIONS_BASE = "https://kx2kaqlxinzax2dn.public.blob.vercel-storage.com/installations"
+
+const INSTALLATIONS = [
+  { src: `${INSTALLATIONS_BASE}/boardroom-1.jpg`, alt: "Acoustic panel accent wall installed behind a screen in a corporate boardroom" },
+  { src: `${INSTALLATIONS_BASE}/boardroom-3.jpg`, alt: "Wide view of the acoustic panel wall and boardroom table" },
+  { src: `${INSTALLATIONS_BASE}/boardroom-2.jpg`, alt: "Boardroom seating facing the acoustic panel wall" },
 ]
 
 const TESTIMONIALS = [
@@ -287,7 +252,7 @@ export default function Home() {
                 <div className="halftone relative aspect-[4/5] overflow-hidden">
                   <div className="hero-image absolute inset-0">
                     <Image
-                      src={PRODUCTS[0].image}
+                      src={PRODUCTS[0].images[0].src}
                       alt="Binary Abfuser acoustic panel"
                       fill
                       className="object-cover"
@@ -347,38 +312,43 @@ export default function Home() {
 
           <div className="border-t border-acoustic-border">
             {PRODUCTS.map((product, index) => (
-              <div key={product.name} className="product-row group grid md:grid-cols-12 gap-8 md:gap-10 items-center py-12 md:py-16 border-b border-acoustic-border">
+              <div key={product.slug} className="product-row group grid md:grid-cols-12 gap-8 md:gap-10 items-center py-12 md:py-16 border-b border-acoustic-border">
                 {/* Index */}
                 <div className="md:col-span-1">
-                  <span className="font-body text-sm tracking-[0.2em] text-acoustic-gold/50">{product.idx}</span>
+                  <span className="font-body text-sm tracking-[0.2em] text-acoustic-gold/50">{product.index}</span>
                 </div>
 
                 {/* Image */}
                 <div className={`md:col-span-5 ${index % 2 === 1 ? "md:order-last" : ""}`}>
                   <div className="relative aspect-[3/2] overflow-hidden border border-acoustic-border">
                     <div className="product-parallax absolute inset-0">
-                      <Image src={product.image} alt={product.name} fill className="object-cover img-zoom" />
+                      <Image
+                      src={product.images[0].src}
+                      alt={product.name}
+                      fill
+                      className="object-cover img-zoom"
+                      sizes="(min-width: 768px) 40vw, 100vw"
+                    />
                     </div>
                   </div>
                 </div>
 
                 {/* Copy */}
                 <div className="md:col-span-6">
-                  <p className="font-body text-[9px] tracking-[0.3em] uppercase text-acoustic-gold mb-4">{product.tag}</p>
+                  <p className="font-body text-[9px] tracking-[0.3em] uppercase text-acoustic-gold mb-4">{product.eyebrow}</p>
                   <h3 className="font-display text-3xl md:text-4xl text-acoustic-cream font-light mb-5">{product.name}</h3>
                   <p className="font-body text-[13px] text-acoustic-muted leading-relaxed mb-8 max-w-md">{product.description}</p>
 
-                  <dl className="mb-8 max-w-md">
-                    {product.specs.map(([k, v]) => (
-                      <div key={k} className="flex items-baseline justify-between gap-4 py-2.5 border-t border-acoustic-border">
-                        <dt className="font-body text-[9px] tracking-[0.25em] uppercase text-acoustic-dim">{k}</dt>
-                        <dd className="font-body text-[11px] tracking-[0.05em] text-acoustic-muted text-right">{v}</dd>
-                      </div>
+                  <div className="flex flex-wrap gap-2 mb-8">
+                    {product.cardSpecs.map((spec) => (
+                      <span key={spec} className="font-body text-[10px] tracking-[0.12em] uppercase text-acoustic-muted border border-acoustic-border px-3 py-1.5">
+                        {spec}
+                      </span>
                     ))}
-                  </dl>
+                  </div>
 
                   <Link
-                    href={product.link}
+                    href={`/products/${product.slug}`}
                     className="inline-flex items-center gap-3 font-body text-[11px] tracking-[0.2em] uppercase text-acoustic-gold hover:text-acoustic-gold-light transition-colors group/link"
                   >
                     <span>Detail</span>
@@ -419,6 +389,40 @@ export default function Home() {
                 </div>
                 <h3 className="font-grotesk text-xl text-acoustic-cream mb-4 font-medium">{item.title}</h3>
                 <p className="font-body text-[13px] text-acoustic-muted leading-relaxed">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Installation ── */}
+      <section className="py-24 md:py-32 bg-acoustic-black">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="reveal flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
+            <div>
+              <SectionLabel>Real Work</SectionLabel>
+              <h2 className="font-display text-4xl md:text-6xl text-acoustic-cream font-light mt-4">
+                A recent installation
+              </h2>
+              <p className="font-body text-[13px] text-acoustic-muted leading-relaxed max-w-md mt-5">
+                An acoustic panel wall fitted into a corporate boardroom in Kuala Lumpur, treating reflections off the hard surfaces around the display.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid sm:grid-cols-3 gap-1.5" data-stagger>
+            {INSTALLATIONS.map((photo, i) => (
+              <div key={photo.src} data-stagger-item className="relative aspect-[4/3] overflow-hidden border border-acoustic-border">
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  fill
+                  className="object-cover img-zoom"
+                  sizes="(min-width: 640px) 33vw, 100vw"
+                />
+                <div className="absolute left-3 bottom-3 font-body text-[9px] tracking-[0.25em] uppercase text-acoustic-cream/70 bg-acoustic-black/50 px-2 py-1 tabular-nums">
+                  {String(i + 1).padStart(2, "0")}
+                </div>
               </div>
             ))}
           </div>
@@ -472,7 +476,7 @@ export default function Home() {
 
           <div className="reveal text-center mt-10">
             <a
-              href="https://www.facebook.com/marketplace/profile/100027440362157/?ref=permalink&mibextid=dXMIcH"
+              href={business.facebookMarketplace}
               target="_blank"
               rel="noopener noreferrer"
               className="font-body text-[10px] tracking-[0.2em] uppercase text-acoustic-dim hover:text-acoustic-muted transition-colors"
@@ -501,7 +505,7 @@ export default function Home() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <a
-                  href="https://wa.me/60197697886"
+                  href={whatsappHref("Hi, I'd like to know more about your acoustic panels.")}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="magnetic inline-flex items-center justify-center gap-2.5 font-body text-[11px] tracking-[0.2em] uppercase bg-acoustic-gold text-acoustic-black px-8 py-4 hover:bg-acoustic-gold-light transition-colors font-medium"
@@ -522,10 +526,10 @@ export default function Home() {
 
             <dl className="border-t border-acoustic-border">
               {[
-                ["Phone", "+6019-769 7886", "tel:+60197697886"],
-                ["Email", "amaryaakob95@gmail.com", "mailto:amaryaakob95@gmail.com"],
-                ["Marketplace", "Facebook Marketplace", "https://www.facebook.com/marketplace/profile/100027440362157/?ref=permalink&mibextid=dXMIcH"],
-                ["Hours", "Daily · 9:00–17:00 GMT+8", ""],
+                ["Phone", business.phoneDisplay, `tel:${business.phone}`],
+                ["Email", business.email, `mailto:${business.email}`],
+                ["Facebook", "Acoustic Treats", business.facebookPage],
+                ["Hours", business.hours, ""],
               ].map(([label, value, href]) => (
                 <div key={label} className="flex items-baseline justify-between gap-4 py-4 border-b border-acoustic-border">
                   <dt className="font-body text-[9px] tracking-[0.28em] uppercase text-acoustic-gold">{label}</dt>

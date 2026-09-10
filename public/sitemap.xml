@@ -3,36 +3,43 @@
   <url>
     <loc>https://acoustic-treats.vercel.app/</loc>
     <changefreq>monthly</changefreq>
+    <lastmod>2026-09-10</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://acoustic-treats.vercel.app/products</loc>
     <changefreq>monthly</changefreq>
+    <lastmod>2026-09-10</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://acoustic-treats.vercel.app/products/binary-abfuser</loc>
     <changefreq>monthly</changefreq>
+    <lastmod>2026-09-10</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://acoustic-treats.vercel.app/products/diffuser</loc>
     <changefreq>monthly</changefreq>
+    <lastmod>2026-09-10</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://acoustic-treats.vercel.app/products/absorption-soundproof</loc>
     <changefreq>monthly</changefreq>
+    <lastmod>2026-09-10</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://acoustic-treats.vercel.app/about</loc>
     <changefreq>yearly</changefreq>
+    <lastmod>2026-09-10</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://acoustic-treats.vercel.app/request-quote</loc>
     <changefreq>yearly</changefreq>
+    <lastmod>2026-09-10</lastmod>
     <priority>0.7</priority>
   </url>
 </urlset>

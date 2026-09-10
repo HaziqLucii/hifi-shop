@@ -1,40 +1,36 @@
+import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { Breadcrumb } from "../components/breadcrumb"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { products } from "@/lib/products"
+import { faqs, whatsappHref } from "@/lib/business"
+import { breadcrumbJsonLd, faqJsonLd } from "@/lib/schema"
 
-const products = [
-  {
-    idx: "01",
-    name: "Binary Abfuser",
-    tag: "Hybrid Absorber · Diffuser",
-    description: "Advanced acoustic treatment combining absorption and diffusion. Multiple pattern variations and finish options for precise sound control.",
-    image: "https://kx2kaqlxinzax2dn.public.blob.vercel-storage.com/binaryabfuser/binaryabfuser-1.jpg",
-    link: "/products/binary-abfuser",
-    specs: ["NRC 0.85", "60×60×10cm", "125–4000 Hz"],
+export const metadata: Metadata = {
+  title: "Acoustic Products",
+  description: "Three acoustic systems, each made to order for your space: the Binary Abfuser, Acoustic Diffuser, and Absorption Panel.",
+  alternates: {
+    canonical: "/products",
   },
-  {
-    idx: "02",
-    name: "Acoustic Diffuser",
-    tag: "Sound Wave Scattering",
-    description: "Precision-engineered sound wave scattering for optimal acoustic balance. Mathematically designed surface patterns in wood, foam, or composite.",
-    image: "https://kx2kaqlxinzax2dn.public.blob.vercel-storage.com/diffuser/diffusers-1.jpeg",
-    link: "/products/diffuser",
-    specs: ["60×60×15cm", "500–5000 Hz", "10–15 m²"],
-  },
-  {
-    idx: "03",
-    name: "Absorption Soundproof",
-    tag: "Echo & Reverb Control",
-    description: "Professional-grade sound absorption. High-density foam core with fire-rated materials. Effectively reduces echo and reverberation.",
-    image: "https://kx2kaqlxinzax2dn.public.blob.vercel-storage.com/absorptionpanel/absorption-panel-1.jpeg",
-    link: "/products/absorption-soundproof",
-    specs: ["NRC 0.95", "60×120×5cm", "Class A Fire Rating"],
-  },
-]
+}
 
 export default function Products() {
   return (
     <div className="min-h-screen bg-acoustic-black">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd([
+              { name: "Home", path: "/" },
+              { name: "Products", path: "/products" },
+            ])
+          ),
+        }}
+      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(faqs)) }} />
+
       {/* Header */}
       <section className="relative border-b border-acoustic-border bg-acoustic-dark overflow-hidden">
         <span aria-hidden="true" className="pointer-events-none select-none absolute -right-8 -bottom-20 font-display text-[18rem] leading-none text-acoustic-gold/[0.04]">
@@ -59,24 +55,30 @@ export default function Products() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div className="border-t border-acoustic-border">
           {products.map((product, index) => (
-            <div key={product.name} className="group grid md:grid-cols-12 gap-8 md:gap-10 items-center py-12 md:py-16 border-b border-acoustic-border">
+            <div key={product.slug} className="group grid md:grid-cols-12 gap-8 md:gap-10 items-center py-12 md:py-16 border-b border-acoustic-border">
               <div className="md:col-span-1">
-                <span className="font-body text-sm tracking-[0.2em] text-acoustic-gold/50">{product.idx}</span>
+                <span className="font-body text-sm tracking-[0.2em] text-acoustic-gold/50">{product.index}</span>
               </div>
 
               <div className={`md:col-span-5 ${index % 2 === 1 ? "md:order-last" : ""}`}>
-                <Link href={product.link} className="block relative aspect-[3/2] overflow-hidden border border-acoustic-border">
-                  <Image src={product.image} alt={product.name} fill className="object-cover img-zoom" />
+                <Link href={`/products/${product.slug}`} className="block relative aspect-[3/2] overflow-hidden border border-acoustic-border">
+                  <Image
+                    src={product.images[0].src}
+                    alt={product.name}
+                    fill
+                    className="object-cover img-zoom"
+                    sizes="(min-width: 768px) 40vw, 100vw"
+                  />
                 </Link>
               </div>
 
               <div className="md:col-span-6">
-                <p className="font-body text-[9px] tracking-[0.3em] uppercase text-acoustic-gold mb-4">{product.tag}</p>
+                <p className="font-body text-[9px] tracking-[0.3em] uppercase text-acoustic-gold mb-4">{product.eyebrow}</p>
                 <h2 className="font-display text-3xl md:text-4xl text-acoustic-cream font-light mb-5">{product.name}</h2>
                 <p className="font-body text-[13px] text-acoustic-muted leading-relaxed mb-7 max-w-md">{product.description}</p>
 
                 <div className="flex flex-wrap gap-2 mb-8">
-                  {product.specs.map((spec) => (
+                  {product.cardSpecs.map((spec) => (
                     <span key={spec} className="font-body text-[10px] tracking-[0.12em] uppercase text-acoustic-muted border border-acoustic-border px-3 py-1.5">
                       {spec}
                     </span>
@@ -84,7 +86,7 @@ export default function Products() {
                 </div>
 
                 <Link
-                  href={product.link}
+                  href={`/products/${product.slug}`}
                   className="inline-flex items-center gap-3 font-body text-[11px] tracking-[0.2em] uppercase text-acoustic-gold hover:text-acoustic-gold-light transition-colors group/link"
                 >
                   <span>View Details</span>
@@ -103,7 +105,7 @@ export default function Products() {
             All products are available in custom dimensions and finishes to suit your specific acoustic requirements and room aesthetics.
           </p>
           <a
-            href="https://wa.me/60197697886"
+            href={whatsappHref("Hi, I'd like a custom size or finish for one of your acoustic panels. Could you help?")}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2.5 font-body text-[11px] tracking-[0.2em] uppercase bg-acoustic-gold text-acoustic-black px-8 py-4 hover:bg-acoustic-gold-light transition-colors font-medium"
@@ -113,6 +115,24 @@ export default function Products() {
             </svg>
             Enquire via WhatsApp
           </a>
+        </div>
+
+        {/* FAQ */}
+        <div className="mt-20 max-w-3xl">
+          <p className="font-body text-[10px] tracking-[0.3em] uppercase text-acoustic-gold mb-4">Frequently Asked</p>
+          <h3 className="font-display text-3xl md:text-4xl text-acoustic-cream font-light mb-10">Questions buyers ask</h3>
+          <Accordion type="single" collapsible className="border-t border-acoustic-border">
+            {faqs.map((faq, i) => (
+              <AccordionItem key={i} value={`item-${i}`} className="border-acoustic-border">
+                <AccordionTrigger className="font-body text-[13px] text-acoustic-cream hover:no-underline py-5 text-left">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="font-body text-[13px] text-acoustic-muted leading-relaxed">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       </section>
     </div>

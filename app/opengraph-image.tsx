@@ -6,10 +6,10 @@ export const contentType = "image/png"
 
 const BARS = [4, 9, 15, 22, 18, 28, 20, 34, 18, 26, 14, 20, 10, 16, 8, 12, 18, 26, 30, 22, 16, 24, 30, 18, 12, 8, 14, 20]
 
-const GOLD = "#b8953a"
-const BLACK = "#080b0f"
-const CREAM = "#e8e0d5"
-const MUTED = "#9b958c"
+const GOLD = "#cdc4ba"
+const BLACK = "#0b0a09"
+const CREAM = "#e9e2d7"
+const MUTED = "#9b948b"
 
 export default function Image() {
   return new ImageResponse(
@@ -21,7 +21,7 @@ export default function Image() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: `radial-gradient(120% 120% at 50% 0%, #10151b 0%, ${BLACK} 60%)`,
+          background: `radial-gradient(120% 120% at 50% 0%, #151210 0%, ${BLACK} 60%)`,
           padding: 64,
           fontFamily: "sans-serif",
         }}
@@ -34,7 +34,7 @@ export default function Image() {
             left: 28,
             right: 28,
             bottom: 28,
-            border: `1px solid rgba(184,149,58,0.28)`,
+            border: `1px solid rgba(205,196,186,0.28)`,
           }}
         />
 
